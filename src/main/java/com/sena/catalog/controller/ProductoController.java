@@ -1,37 +1,47 @@
 package com.sena.catalog.controller;
 
-import com.sena.catalog.domain.dto.ProductoRequestDTO;
-import com.sena.catalog.domain.dto.ProductoResponseDTO;
-import com.sena.catalog.service.IProductoService;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.sena.catalog.domain.model.Producto;
+import com.sena.catalog.repository.ProductoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/productos")
+@RequestMapping("/api/productos")
 public class ProductoController {
 
-    private final IProductoService productoService;
+    @Autowired
+    private ProductoRepository productoRepository;
 
-    public ProductoController(IProductoService productoService) {
-        this.productoService = productoService;
-    }
-
+    // Obtener todos los productos REALES de la base de datos
     @GetMapping
-    public ResponseEntity<List<ProductoResponseDTO>> obtenerTodos() {
-        return ResponseEntity.ok(productoService.listarTodos());
+    public List<Producto> obtenerProductos() {
+        return productoRepository.findAll();
     }
 
+    // Obtener producto por ID desde la BD
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoResponseDTO> obtenerPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(productoService.buscarPorId(id));
+    public Producto obtenerProductoPorId(@PathVariable Long id) {
+        return productoRepository.findById(id).orElse(null);
     }
 
+    // Guardar un producto REAL en la BD
     @PostMapping
-    public ResponseEntity<ProductoResponseDTO> crear(@Valid @RequestBody ProductoRequestDTO dto) {
-        return new ResponseEntity<>(productoService.guardar(dto), HttpStatus.CREATED);
+    public Producto crearProducto(@RequestBody Producto producto) {
+        return productoRepository.save(producto);
+    }
+
+    // Actualizar un producto REAL en la BD
+    @PutMapping("/{id}")
+    public Producto actualizarProducto(@PathVariable Long id, @RequestBody Producto producto) {
+        producto.setId(id);
+        return productoRepository.save(producto);
+    }
+
+    // Eliminar un producto por ID de la BD
+    @DeleteMapping("/{id}")
+    public void eliminarProducto(@PathVariable Long id) {
+        productoRepository.deleteById(id);
     }
 }

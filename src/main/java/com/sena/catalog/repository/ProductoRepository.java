@@ -1,5 +1,9 @@
-package repository;
+package com.sena.catalog.repository;
 
-public class ProductoRepository {
-    
+import com.sena.catalog.domain.model.Producto;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProductoRepository extends JpaRepository<Producto, Long> {
 }

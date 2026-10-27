@@ -1,5 +1,5 @@
-package service;
+package com.sena.catalog.service;
 
-public class ICategoriaServicio {
-    
+public interface ICategoriaServicio {
+    // Aquí van las firmas de tus métodos de servicio de categorías
 }

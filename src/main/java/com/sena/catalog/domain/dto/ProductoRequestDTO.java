@@ -1,4 +1,4 @@
-package com.sena.catalog.dto;
+package com.sena.catalog.domain.dto;
 
 import jakarta.validation.constraints.*;
 
